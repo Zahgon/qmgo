@@ -16,9 +16,7 @@ package qmgo
 import (
 	"context"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // BulkResult is the result type returned by Bulk.Run operation.
@@ -66,94 +64,66 @@ type Bulk struct {
 }
 
 // Bulk returns a new context for preparing bulk execution of operations.
-func (c *Collection) Bulk() *Bulk {
-	return &Bulk{
-		coll:    c,
-		queue:   nil,
-		ordered: nil,
-	}
-}
+func (c *Collection) Bulk() *Bulk { _ = "STUB: not implemented"; return nil }
 
 // SetOrdered marks the bulk as ordered or unordered.
 //
 // If ordered, writes does not continue after one individual write fails.
 // Default is ordered.
-func (b *Bulk) SetOrdered(ordered bool) *Bulk {
-	b.ordered = &ordered
-	return b
-}
+func (b *Bulk) SetOrdered(ordered bool) *Bulk { _ = "STUB: not implemented"; return nil }
 
 // InsertOne queues an InsertOne operation for bulk execution.
-func (b *Bulk) InsertOne(doc interface{}) *Bulk {
-	wm := mongo.NewInsertOneModel().SetDocument(doc)
-	b.queue = append(b.queue, wm)
-	return b
-}
+func (b *Bulk) InsertOne(doc interface{}) *Bulk { _ = "STUB: not implemented"; return nil }
 
 // Remove queues a Remove operation for bulk execution.
-func (b *Bulk) Remove(filter interface{}) *Bulk {
-	wm := mongo.NewDeleteOneModel().SetFilter(filter)
-	b.queue = append(b.queue, wm)
-	return b
-}
+func (b *Bulk) Remove(filter interface{}) *Bulk { _ = "STUB: not implemented"; return nil }
 
 // RemoveId queues a RemoveId operation for bulk execution.
-func (b *Bulk) RemoveId(id interface{}) *Bulk {
-	b.Remove(bson.M{"_id": id})
-	return b
-}
+func (b *Bulk) RemoveId(id interface{}) *Bulk { _ = "STUB: not implemented"; return nil }
 
 // RemoveAll queues a RemoveAll operation for bulk execution.
-func (b *Bulk) RemoveAll(filter interface{}) *Bulk {
-	wm := mongo.NewDeleteManyModel().SetFilter(filter)
-	b.queue = append(b.queue, wm)
-	return b
-}
+func (b *Bulk) RemoveAll(filter interface{}) *Bulk { _ = "STUB: not implemented"; return nil }
 
 // Upsert queues an Upsert operation for bulk execution.
 // The replacement should be document without operator
 func (b *Bulk) Upsert(filter interface{}, replacement interface{}) *Bulk {
-	wm := mongo.NewReplaceOneModel().SetFilter(filter).SetReplacement(replacement).SetUpsert(true)
-	b.queue = append(b.queue, wm)
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UpsertOne queues an UpsertOne operation for bulk execution.
 // The update should contain operator
 func (b *Bulk) UpsertOne(filter interface{}, update interface{}) *Bulk {
-	wm := mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update).SetUpsert(true)
-	b.queue = append(b.queue, wm)
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UpsertId queues an UpsertId operation for bulk execution.
 // The replacement should be document without operator
 func (b *Bulk) UpsertId(id interface{}, replacement interface{}) *Bulk {
-	b.Upsert(bson.M{"_id": id}, replacement)
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UpdateOne queues an UpdateOne operation for bulk execution.
 // The update should contain operator
 func (b *Bulk) UpdateOne(filter interface{}, update interface{}) *Bulk {
-	wm := mongo.NewUpdateOneModel().SetFilter(filter).SetUpdate(update)
-	b.queue = append(b.queue, wm)
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UpdateId queues an UpdateId operation for bulk execution.
 // The update should contain operator
 func (b *Bulk) UpdateId(id interface{}, update interface{}) *Bulk {
-	b.UpdateOne(bson.M{"_id": id}, update)
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UpdateAll queues an UpdateAll operation for bulk execution.
 // The update should contain operator
 func (b *Bulk) UpdateAll(filter interface{}, update interface{}) *Bulk {
-	wm := mongo.NewUpdateManyModel().SetFilter(filter).SetUpdate(update)
-	b.queue = append(b.queue, wm)
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Run executes the collected operations in a single bulk operation.
@@ -162,24 +132,10 @@ func (b *Bulk) UpdateAll(filter interface{}, update interface{}) *Bulk {
 // queue of operations is unchanged, containing both successful and failed
 // operations.
 func (b *Bulk) Run(ctx context.Context) (*BulkResult, error) {
-	opts := options.BulkWriteOptions{
-		Ordered: b.ordered,
-	}
-	result, err := b.coll.collection.BulkWrite(ctx, b.queue, &opts)
-	if err != nil {
-		// In original mgo, queue is not reset in case of error.
-		return nil, err
-	}
-
-	// Empty the queue for possible reuse, as per mgo's behavior.
-	b.queue = nil
-
-	return &BulkResult{
-		InsertedCount: result.InsertedCount,
-		MatchedCount:  result.MatchedCount,
-		ModifiedCount: result.ModifiedCount,
-		DeletedCount:  result.DeletedCount,
-		UpsertedCount: result.UpsertedCount,
-		UpsertedIDs:   result.UpsertedIDs,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// In original mgo, queue is not reset in case of error.
+
+// Empty the queue for possible reuse, as per mgo's behavior.

@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+
 	"github.com/qiniu/qmgo/field"
 	"github.com/qiniu/qmgo/hook"
 	"github.com/qiniu/qmgo/operator"
@@ -20,17 +21,11 @@ var middlewareCallback = []callback{
 }
 
 // Register register callback into middleware
-func Register(cb callback) {
-	middlewareCallback = append(middlewareCallback, cb)
-}
+func Register(cb callback) { _ = "STUB: not implemented"; return }
 
 // Do call every registers
 // The doc is always the document to operate
 func Do(ctx context.Context, content interface{}, opType operator.OpType, opts ...interface{}) error {
-	for _, cb := range middlewareCallback {
-		if err := cb(ctx, content, opType, opts...); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

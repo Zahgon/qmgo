@@ -31,34 +31,21 @@ type Database struct {
 
 // Collection gets collection from database
 func (d *Database) Collection(name string, opts ...*options.CollectionOptions) *Collection {
-	var cp *mongo.Collection
-	var opt = make([]*officialOpts.CollectionOptions, 0, len(opts))
-	for _, o := range opts {
-		opt = append(opt, o.CollectionOptions)
-	}
-	collOpt := officialOpts.MergeCollectionOptions(opt...)
-	cp = d.database.Collection(name, collOpt)
-
-	return &Collection{
-		collection: cp,
-		registry:   d.registry,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ListCollections lists all collections in the database.
 func (d *Database) ListCollections(ctx context.Context, filter interface{}, opts ...*officialOpts.ListCollectionsOptions) ([]string, error) {
-	return d.database.ListCollectionNames(ctx, filter, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetDatabaseName returns the name of database
-func (d *Database) GetDatabaseName() string {
-	return d.database.Name()
-}
+func (d *Database) GetDatabaseName() string { _ = "STUB: not implemented"; return "" }
 
 // DropDatabase drops database
-func (d *Database) DropDatabase(ctx context.Context) error {
-	return d.database.Drop(ctx)
-}
+func (d *Database) DropDatabase(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // RunCommand executes the given command against the database.
 //
@@ -68,11 +55,8 @@ func (d *Database) DropDatabase(ctx context.Context) error {
 //
 // The opts parameter can be used to specify options for this operation (see the options.RunCmdOptions documentation).
 func (d *Database) RunCommand(ctx context.Context, runCommand interface{}, opts ...options.RunCommandOptions) *mongo.SingleResult {
-	option := officialOpts.RunCmd()
-	if len(opts) > 0 && opts[0].RunCmdOptions != nil {
-		option = opts[0].RunCmdOptions
-	}
-	return d.database.RunCommand(ctx, runCommand, option)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // CreateCollection executes a create command to explicitly create a new collection with the specified name on the
@@ -82,11 +66,6 @@ func (d *Database) RunCommand(ctx context.Context, runCommand interface{}, opts 
 // The opts parameter can be used to specify options for the operation (see the options.CreateCollectionOptions
 // documentation).
 func (db *Database) CreateCollection(ctx context.Context, name string, opts ...options.CreateCollectionOptions) error {
-	var option = make([]*officialOpts.CreateCollectionOptions, 0, len(opts))
-	for _, opt := range opts {
-		if opt.CreateCollectionOptions != nil {
-			option = append(option, opt.CreateCollectionOptions)
-		}
-	}
-	return db.database.CreateCollection(ctx, name, option...)
+	_ = "STUB: not implemented"
+	return nil
 }

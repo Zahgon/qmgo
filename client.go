@@ -15,13 +15,8 @@ package qmgo
 
 import (
 	"context"
-	"fmt"
-	"net/url"
-	"strings"
-	"time"
 
 	"github.com/qiniu/qmgo/options"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/bsoncodec"
 	"go.mongodb.org/mongo-driver/mongo"
 	officialOpts "go.mongodb.org/mongo-driver/mongo/options"
@@ -107,22 +102,8 @@ type QmgoClient struct {
 // Open creates client instance according to config
 // QmgoClient can operates all qmgo.client 、qmgo.database and qmgo.collection
 func Open(ctx context.Context, conf *Config, o ...options.ClientOptions) (cli *QmgoClient, err error) {
-	client, err := NewClient(ctx, conf, o...)
-	if err != nil {
-		fmt.Println("new client fail", err)
-		return
-	}
-
-	db := client.Database(conf.Database)
-	coll := db.Collection(conf.Coll)
-
-	cli = &QmgoClient{
-		Client:     client,
-		Database:   db,
-		Collection: coll,
-	}
-
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Client creates client to mongo
@@ -135,176 +116,58 @@ type Client struct {
 
 // NewClient creates Qmgo MongoDB client
 func NewClient(ctx context.Context, conf *Config, o ...options.ClientOptions) (cli *Client, err error) {
-	opt, err := newConnectOpts(conf, o...)
-	if err != nil {
-		return nil, err
-	}
-	client, err := client(ctx, opt)
-	if err != nil {
-		fmt.Println("new client fail", err)
-		return
-	}
-	cli = &Client{
-		client:   client,
-		conf:     *conf,
-		registry: opt.Registry,
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // client creates connection to MongoDB
 func client(ctx context.Context, opt *officialOpts.ClientOptions) (client *mongo.Client, err error) {
-	client, err = mongo.Connect(ctx, opt)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	// half of default connect timeout
-	pCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
-	defer cancel()
-	if err = client.Ping(pCtx, readpref.Primary()); err != nil {
-		fmt.Println(err)
-		return
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// half of default connect timeout
 
 // newConnectOpts creates client options from conf
 // Qmgo will follow this way official mongodb driver do：
 // - the configuration in uri takes precedence over the configuration in the setter
 // - Check the validity of the configuration in the uri, while the configuration in the setter is basically not checked
 func newConnectOpts(conf *Config, o ...options.ClientOptions) (*officialOpts.ClientOptions, error) {
-	option := officialOpts.Client()
-	for _, apply := range o {
-		option = officialOpts.MergeClientOptions(apply.ClientOptions)
-	}
-	if conf.ConnectTimeoutMS != nil {
-		timeoutDur := time.Duration(*conf.ConnectTimeoutMS) * time.Millisecond
-		option.SetConnectTimeout(timeoutDur)
-
-	}
-	if conf.SocketTimeoutMS != nil {
-		timeoutDur := time.Duration(*conf.SocketTimeoutMS) * time.Millisecond
-		option.SetSocketTimeout(timeoutDur)
-	} else {
-		option.SetSocketTimeout(300 * time.Second)
-	}
-	if conf.MaxPoolSize != nil {
-		option.SetMaxPoolSize(*conf.MaxPoolSize)
-	}
-	if conf.MinPoolSize != nil {
-		option.SetMinPoolSize(*conf.MinPoolSize)
-	}
-	if conf.ReadPreference != nil {
-		readPreference, err := newReadPref(*conf.ReadPreference)
-		if err != nil {
-			return nil, err
-		}
-		option.SetReadPreference(readPreference)
-	}
-	if conf.Auth != nil {
-		auth, err := newAuth(*conf.Auth)
-		if err != nil {
-			return nil, err
-		}
-		option.SetAuth(auth)
-	}
-	option.ApplyURI(conf.Uri)
-
-	return option, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // newAuth create options.Credential from conf.Auth
 func newAuth(auth Credential) (credential officialOpts.Credential, err error) {
-	if auth.AuthMechanism != "" {
-		credential.AuthMechanism = auth.AuthMechanism
-	}
-	if auth.AuthSource != "" {
-		credential.AuthSource = auth.AuthSource
-	}
-	if auth.Username != "" {
-		// Validate and process the username.
-		if strings.Contains(auth.Username, "/") {
-			err = ErrNotSupportedUsername
-			return
-		}
-		credential.Username, err = url.QueryUnescape(auth.Username)
-		if err != nil {
-			err = ErrNotSupportedUsername
-			return
-		}
-	}
-	credential.PasswordSet = auth.PasswordSet
-	if auth.Password != "" {
-		if strings.Contains(auth.Password, ":") {
-			err = ErrNotSupportedPassword
-			return
-		}
-		if strings.Contains(auth.Password, "/") {
-			err = ErrNotSupportedPassword
-			return
-		}
-		credential.Password, err = url.QueryUnescape(auth.Password)
-		if err != nil {
-			err = ErrNotSupportedPassword
-			return
-		}
-		credential.Password = auth.Password
-	}
-	return
+	_ = "STUB: not implemented"
+	return *new(officialOpts.Credential), nil
 }
+
+// Validate and process the username.
 
 // newReadPref create readpref.ReadPref from config
 func newReadPref(pref ReadPref) (*readpref.ReadPref, error) {
-	readPrefOpts := make([]readpref.Option, 0, 1)
-	if pref.MaxStalenessMS != 0 {
-		readPrefOpts = append(readPrefOpts, readpref.WithMaxStaleness(time.Duration(pref.MaxStalenessMS)*time.Millisecond))
-	}
-	mode := readpref.PrimaryMode
-	if pref.Mode != 0 {
-		mode = pref.Mode
-	}
-	readPreference, err := readpref.New(mode, readPrefOpts...)
-	return readPreference, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Close closes sockets to the topology referenced by this Client.
-func (c *Client) Close(ctx context.Context) error {
-	err := c.client.Disconnect(ctx)
-	return err
-}
+func (c *Client) Close(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Ping confirm connection is alive
-func (c *Client) Ping(timeout int64) error {
-	var err error
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
-	defer cancel()
-
-	if err = c.client.Ping(ctx, readpref.Primary()); err != nil {
-		return err
-	}
-	return nil
-}
+func (c *Client) Ping(timeout int64) error { _ = "STUB: not implemented"; return nil }
 
 // Database create connection to database
 func (c *Client) Database(name string, options ...*options.DatabaseOptions) *Database {
-	opts := make([]*officialOpts.DatabaseOptions, 0, len(options))
-	for _, o := range options {
-		opts = append(opts, o.DatabaseOptions)
-	}
-	databaseOpts := officialOpts.MergeDatabaseOptions(opts...)
-	return &Database{database: c.client.Database(name, databaseOpts), registry: c.registry}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Session create one session on client
 // Watch out, close session after operation done
 func (c *Client) Session(opt ...*options.SessionOptions) (*Session, error) {
-	sessionOpts := officialOpts.Session()
-	if len(opt) > 0 && opt[0].SessionOptions != nil {
-		sessionOpts = opt[0].SessionOptions
-	}
-	s, err := c.client.StartSession(sessionOpts)
-	return &Session{session: s}, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DoTransaction do whole transaction in one function
@@ -319,52 +182,20 @@ func (c *Client) Session(opt ...*options.SessionOptions) (*Session, error) {
 //   - if operations in callback return qmgo.ErrTransactionNotSupported,
 //   - If the ctx parameter already has a Session attached to it, it will be replaced by this session.
 func (c *Client) DoTransaction(ctx context.Context, callback func(sessCtx context.Context) (interface{}, error), opts ...*options.TransactionOptions) (interface{}, error) {
-	if !c.transactionAllowed() {
-		return nil, ErrTransactionNotSupported
-	}
-	s, err := c.Session()
-	if err != nil {
-		return nil, err
-	}
-	defer s.EndSession(ctx)
-	return s.StartTransaction(ctx, callback, opts...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ServerVersion get the version of mongoDB server, like 4.4.0
-func (c *Client) ServerVersion() string {
-	var buildInfo bson.Raw
-	err := c.client.Database("admin").RunCommand(
-		context.Background(),
-		bson.D{{"buildInfo", 1}},
-	).Decode(&buildInfo)
-	if err != nil {
-		fmt.Println("run command err", err)
-		return ""
-	}
-	v, err := buildInfo.LookupErr("version")
-	if err != nil {
-		fmt.Println("look up err", err)
-		return ""
-	}
-	return v.StringValue()
-}
+func (c *Client) ServerVersion() string { _ = "STUB: not implemented"; return "" }
 
 // transactionAllowed check if transaction is allowed
-func (c *Client) transactionAllowed() bool {
-	vr, err := CompareVersions("4.0", c.ServerVersion())
-	if err != nil {
-		return false
-	}
-	if vr > 0 {
-		fmt.Println("transaction is not supported because mongo server version is below 4.0")
-		return false
-	}
-	// TODO dont know why need to do `cli, err := Open(ctx, &c.conf)` in topology() to get topo,
-	// Before figure it out, we only use this function in UT
-	//topo, err := c.topology()
-	//if topo == description.Single {
-	//	fmt.Println("transaction is not supported because mongo server topology is single")
-	//	return false
-	//}
-	return true
-}
+func (c *Client) transactionAllowed() bool { _ = "STUB: not implemented"; return false }
+
+// TODO dont know why need to do `cli, err := Open(ctx, &c.conf)` in topology() to get topo,
+// Before figure it out, we only use this function in UT
+//topo, err := c.topology()
+//if topo == description.Single {
+//	fmt.Println("transaction is not supported because mongo server topology is single")
+//	return false
+//}

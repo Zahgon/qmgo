@@ -35,20 +35,10 @@ type DefaultField struct {
 }
 
 // DefaultUpdateAt changes the default updateAt field
-func (df *DefaultField) DefaultUpdateAt() {
-	df.UpdateAt = time.Now().Local()
-}
+func (df *DefaultField) DefaultUpdateAt() { _ = "STUB: not implemented"; return }
 
 // DefaultCreateAt changes the default createAt field
-func (df *DefaultField) DefaultCreateAt() {
-	if df.CreateAt.IsZero() {
-		df.CreateAt = time.Now().Local()
-	}
-}
+func (df *DefaultField) DefaultCreateAt() { _ = "STUB: not implemented"; return }
 
 // DefaultId changes the default _id field
-func (df *DefaultField) DefaultId() {
-	if df.Id.IsZero() {
-		df.Id = primitive.NewObjectID()
-	}
-}
+func (df *DefaultField) DefaultId() { _ = "STUB: not implemented"; return }

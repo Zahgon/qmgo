@@ -18,8 +18,6 @@ import (
 
 	opts "github.com/qiniu/qmgo/options"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/x/mongo/driver"
 )
 
 // Session is an struct that represents a MongoDB logical session
@@ -40,56 +38,37 @@ type Session struct {
 //   - if operations in callback return qmgo.ErrTransactionNotSupported,
 //   - If the ctx parameter already has a Session attached to it, it will be replaced by this session.
 func (s *Session) StartTransaction(ctx context.Context, cb func(sessCtx context.Context) (interface{}, error), opts ...*opts.TransactionOptions) (interface{}, error) {
-	transactionOpts := options.Transaction()
-	if len(opts) > 0 && opts[0].TransactionOptions != nil {
-		transactionOpts = opts[0].TransactionOptions
-	}
-	result, err := s.session.WithTransaction(ctx, wrapperCustomCb(cb), transactionOpts)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *Session) StartAsyncTransaction(ctx context.Context, opts ...*opts.TransactionOptions) (context.Context, error) {
-	transactionOpts := options.Transaction()
-	if len(opts) > 0 && opts[0].TransactionOptions != nil {
-		transactionOpts = opts[0].TransactionOptions
-	}
-
-	sCtx := mongo.NewSessionContext(ctx, s.session)
-
-	err := s.session.StartTransaction(transactionOpts)
-
-	return sCtx, err
+	_ = "STUB: not implemented"
+	return *new(context.Context), nil
 }
 
 func (s *Session) CommitAsyncTransaction(ctx context.Context) error {
-	return s.session.CommitTransaction(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Session) AbortAsyncTransaction(ctx context.Context) error {
-	return s.session.AbortTransaction(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EndSession will abort any existing transactions and close the session.
-func (s *Session) EndSession(ctx context.Context) {
-	s.session.EndSession(ctx)
-}
+func (s *Session) EndSession(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 // AbortTransaction aborts the active transaction for this session. This method will return an error if there is no
 // active transaction for this session or the transaction has been committed or aborted.
 func (s *Session) AbortTransaction(ctx context.Context) error {
-	return s.session.AbortTransaction(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // wrapperCustomF wrapper caller's callback function to mongo dirver's
 func wrapperCustomCb(cb func(ctx context.Context) (interface{}, error)) func(sessCtx mongo.SessionContext) (interface{}, error) {
-	return func(sessCtx mongo.SessionContext) (interface{}, error) {
-		result, err := cb(sessCtx)
-		if err == ErrTransactionRetry {
-			return nil, mongo.CommandError{Labels: []string{driver.TransientTransactionError}}
-		}
-		return result, err
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

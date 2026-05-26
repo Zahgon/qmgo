@@ -15,8 +15,8 @@ package qmgo
 
 import (
 	"context"
+
 	opts "github.com/qiniu/qmgo/options"
-	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -34,59 +34,18 @@ type Aggregate struct {
 }
 
 // All iterates the cursor from aggregate and decodes each document into results.
-func (a *Aggregate) All(results interface{}) error {
-	opts := options.Aggregate()
-	if len(a.options) > 0 {
-		opts = a.options[0].AggregateOptions
-	}
-	c, err := a.collection.Aggregate(a.ctx, a.pipeline, opts)
-	if err != nil {
-		return err
-	}
-	return c.All(a.ctx, results)
-}
+func (a *Aggregate) All(results interface{}) error { _ = "STUB: not implemented"; return nil }
 
 // One iterates the cursor from aggregate and decodes current document into result.
-func (a *Aggregate) One(result interface{}) error {
-	opts := options.Aggregate()
-	if len(a.options) > 0 {
-		opts = a.options[0].AggregateOptions
-	}
-	c, err := a.collection.Aggregate(a.ctx, a.pipeline, opts)
-	if err != nil {
-		return err
-	}
-	cr := Cursor{
-		ctx:    a.ctx,
-		cursor: c,
-		err:    err,
-	}
-	defer cr.Close()
-	if !cr.Next(result) {
-		if err := cr.Err(); err != nil {
-			return err
-		}
-		return ErrNoSuchDocuments
-	}
-	return err
-}
+func (a *Aggregate) One(result interface{}) error { _ = "STUB: not implemented"; return nil }
 
 // Iter return the cursor after aggregate
 // Deprecated, please use Cursor
 func (a *Aggregate) Iter() CursorI {
-	return a.Cursor()
+	_ = "STUB: not implemented"
+
+	// Cursor return the cursor after aggregate
+	return *new(CursorI)
 }
 
-// Cursor return the cursor after aggregate
-func (a *Aggregate) Cursor() CursorI {
-	opts := options.Aggregate()
-	if len(a.options) > 0 {
-		opts = a.options[0].AggregateOptions
-	}
-	c, err := a.collection.Aggregate(a.ctx, a.pipeline, opts)
-	return &Cursor{
-		ctx:    a.ctx,
-		cursor: c,
-		err:    err,
-	}
-}
+func (a *Aggregate) Cursor() CursorI { _ = "STUB: not implemented"; return *new(CursorI) }

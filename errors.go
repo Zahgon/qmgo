@@ -15,7 +15,6 @@ package qmgo
 
 import (
 	"errors"
-	"strings"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -47,14 +46,7 @@ var (
 
 // IsErrNoDocuments check if err is no documents, both mongo-go-driver error and qmgo custom error
 // Deprecated, simply call if err == ErrNoSuchDocuments or if err == mongo.ErrNoDocuments
-func IsErrNoDocuments(err error) bool {
-	if err == ErrNoSuchDocuments {
-		return true
-	}
-	return false
-}
+func IsErrNoDocuments(err error) bool { _ = "STUB: not implemented"; return false }
 
 // IsDup check if err is mongo E11000 (duplicate err)。
-func IsDup(err error) bool {
-	return err != nil && strings.Contains(err.Error(), "E11000")
-}
+func IsDup(err error) bool { _ = "STUB: not implemented"; return false }

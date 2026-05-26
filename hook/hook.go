@@ -15,8 +15,8 @@ package hook
 
 import (
 	"context"
+
 	"github.com/qiniu/qmgo/operator"
-	"reflect"
 )
 
 // hookHandler defines the relations between hook type and handler
@@ -43,50 +43,18 @@ var hookHandler = map[operator.OpType]func(ctx context.Context, hook interface{}
 // Do call the specific method to handle hook based on hType
 // If opts has valid value, use it instead of original hook
 func Do(ctx context.Context, hook interface{}, opType operator.OpType, opts ...interface{}) error {
-	if len(opts) > 0 {
-		hook = opts[0]
-	}
-
-	to := reflect.TypeOf(hook)
-	if to == nil {
-		return nil
-	}
-	switch to.Kind() {
-	case reflect.Slice:
-		return sliceHandle(ctx, hook, opType)
-	case reflect.Ptr:
-		v := reflect.ValueOf(hook).Elem()
-		switch v.Kind() {
-		case reflect.Slice:
-			return sliceHandle(ctx, v.Interface(), opType)
-		default:
-			return do(ctx, hook, opType)
-		}
-	default:
-		return do(ctx, hook, opType)
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // sliceHandle handles the slice hooks
 func sliceHandle(ctx context.Context, hook interface{}, opType operator.OpType) error {
+	_ = "STUB: not implemented"
 	// []interface{}{UserType{}...}
-	if h, ok := hook.([]interface{}); ok {
-		for _, v := range h {
-			if err := do(ctx, v, opType); err != nil {
-				return err
-			}
-		}
-		return nil
-	}
-	// []UserType{}
-	s := reflect.ValueOf(hook)
-	for i := 0; i < s.Len(); i++ {
-		if err := do(ctx, s.Index(i).Interface(), opType); err != nil {
-			return err
-		}
-	}
 	return nil
 }
+
+// []UserType{}
 
 // BeforeInsertHook InsertHook defines the insert hook interface
 type BeforeInsertHook interface {
@@ -98,17 +66,13 @@ type AfterInsertHook interface {
 
 // beforeInsert calls custom BeforeInsert
 func beforeInsert(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(BeforeInsertHook); ok {
-		return ih.BeforeInsert(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // afterInsert calls custom AfterInsert
 func afterInsert(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(AfterInsertHook); ok {
-		return ih.AfterInsert(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -122,17 +86,13 @@ type AfterUpdateHook interface {
 
 // beforeUpdate calls custom BeforeUpdate
 func beforeUpdate(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(BeforeUpdateHook); ok {
-		return ih.BeforeUpdate(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // afterUpdate calls custom AfterUpdate
 func afterUpdate(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(AfterUpdateHook); ok {
-		return ih.AfterUpdate(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -146,19 +106,12 @@ type AfterQueryHook interface {
 
 // beforeQuery calls custom BeforeQuery
 func beforeQuery(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(BeforeQueryHook); ok {
-		return ih.BeforeQuery(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // afterQuery calls custom AfterQuery
-func afterQuery(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(AfterQueryHook); ok {
-		return ih.AfterQuery(ctx)
-	}
-	return nil
-}
+func afterQuery(ctx context.Context, hook interface{}) error { _ = "STUB: not implemented"; return nil }
 
 // BeforeRemoveHook RemoveHook defines the remove hook interface
 type BeforeRemoveHook interface {
@@ -170,17 +123,13 @@ type AfterRemoveHook interface {
 
 // beforeRemove calls custom BeforeRemove
 func beforeRemove(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(BeforeRemoveHook); ok {
-		return ih.BeforeRemove(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // afterRemove calls custom AfterRemove
 func afterRemove(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(AfterRemoveHook); ok {
-		return ih.AfterRemove(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -194,25 +143,18 @@ type AfterUpsertHook interface {
 
 // beforeUpsert calls custom BeforeUpsert
 func beforeUpsert(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(BeforeUpsertHook); ok {
-		return ih.BeforeUpsert(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // afterUpsert calls custom AfterUpsert
 func afterUpsert(ctx context.Context, hook interface{}) error {
-	if ih, ok := hook.(AfterUpsertHook); ok {
-		return ih.AfterUpsert(ctx)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // do check if opType is supported and call hookHandler
 func do(ctx context.Context, hook interface{}, opType operator.OpType) error {
-	if f, ok := hookHandler[opType]; !ok {
-		return nil
-	} else {
-		return f(ctx, hook)
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

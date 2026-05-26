@@ -13,7 +13,7 @@
 
 package operator
 
-//Query Modifiers
+// Query Modifiers
 // refer:https://docs.mongodb.com/manual/reference/operator/query-modifier/
 const (
 	// Modifiers

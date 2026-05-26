@@ -13,13 +13,6 @@
 
 package field
 
-import (
-	"fmt"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"reflect"
-	"time"
-)
-
 // CustomFields defines struct of supported custom fields
 type CustomFields struct {
 	createAt string
@@ -41,107 +34,42 @@ type CustomFieldsBuilder interface {
 
 // NewCustom creates new Builder which is used to set the custom fields
 func NewCustom() CustomFieldsBuilder {
-	return &CustomFields{}
+	_ = "STUB: not implemented"
+	return *
+
+	// SetUpdateAt set the custom UpdateAt field
+	new(CustomFieldsBuilder)
 }
 
-// SetUpdateAt set the custom UpdateAt field
 func (c *CustomFields) SetUpdateAt(fieldName string) CustomFieldsBuilder {
-	c.updateAt = fieldName
-	return c
+	_ = "STUB: not implemented"
+	return *new(CustomFieldsBuilder)
 }
 
 // SetCreateAt set the custom CreateAt field
 func (c *CustomFields) SetCreateAt(fieldName string) CustomFieldsBuilder {
-	c.createAt = fieldName
-	return c
+	_ = "STUB: not implemented"
+	return *new(CustomFieldsBuilder)
 }
 
 // SetId set the custom Id field
 func (c *CustomFields) SetId(fieldName string) CustomFieldsBuilder {
-	c.id = fieldName
-	return c
+	_ = "STUB: not implemented"
+	return *new(CustomFieldsBuilder)
 }
 
 // CustomCreateTime changes the custom create time
-func (c CustomFields) CustomCreateTime(doc interface{}) {
-	if c.createAt == "" {
-		return
-	}
-	fieldName := c.createAt
-	setTime(doc, fieldName, false)
-	return
-}
+func (c CustomFields) CustomCreateTime(doc interface{}) { _ = "STUB: not implemented"; return }
 
 // CustomUpdateTime changes the custom update time
-func (c CustomFields) CustomUpdateTime(doc interface{}) {
-	if c.updateAt == "" {
-		return
-	}
-	fieldName := c.updateAt
-	setTime(doc, fieldName, true)
-	return
-}
+func (c CustomFields) CustomUpdateTime(doc interface{}) { _ = "STUB: not implemented"; return }
 
 // CustomUpdateTime changes the custom update time
-func (c CustomFields) CustomId(doc interface{}) {
-	if c.id == "" {
-		return
-	}
-	fieldName := c.id
-	setId(doc, fieldName)
-	return
-}
+func (c CustomFields) CustomId(doc interface{}) { _ = "STUB: not implemented"; return }
 
 // setTime changes the custom time fields
 // The overWrite defines if change value when the filed has valid value
-func setTime(doc interface{}, fieldName string, overWrite bool) {
-	if reflect.Ptr != reflect.TypeOf(doc).Kind() {
-		fmt.Println("not a point type")
-		return
-	}
-	e := reflect.ValueOf(doc).Elem()
-	ca := e.FieldByName(fieldName)
-	if ca.CanSet() {
-		tt := time.Now()
-		switch a := ca.Interface().(type) {
-		case time.Time:
-			if ca.Interface().(time.Time).IsZero() {
-				ca.Set(reflect.ValueOf(tt))
-			} else if overWrite {
-				ca.Set(reflect.ValueOf(tt))
-			}
-		case int64:
-			if ca.Interface().(int64) == 0 {
-				ca.SetInt(tt.Unix())
-			} else if overWrite {
-				ca.SetInt(tt.Unix())
-			}
-		default:
-			fmt.Println("unsupported type to setTime", a)
-		}
-	}
-}
+func setTime(doc interface{}, fieldName string, overWrite bool) { _ = "STUB: not implemented"; return }
 
 // setId changes the custom Id fields
-func setId(doc interface{}, fieldName string) {
-	if reflect.Ptr != reflect.TypeOf(doc).Kind() {
-		fmt.Println("not a point type")
-		return
-	}
-	e := reflect.ValueOf(doc).Elem()
-	ca := e.FieldByName(fieldName)
-	if ca.CanSet() {
-		switch a := ca.Interface().(type) {
-		case primitive.ObjectID:
-			if ca.Interface().(primitive.ObjectID).IsZero() {
-				ca.Set(reflect.ValueOf(primitive.NewObjectID()))
-			}
-		case string:
-			if ca.String() == "" {
-				ca.SetString(primitive.NewObjectID().Hex())
-			}
-		default:
-			fmt.Println("unsupported type to setId", a)
-		}
-	}
-}
+func setId(doc interface{}, fieldName string) { _ = "STUB: not implemented"; return }
